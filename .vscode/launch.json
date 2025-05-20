@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-MicroservicioDePagoApplication<MicroservicioDePago>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.example.MicroservicioDePago.MicroservicioDePagoApplication",
+            "projectName": "MicroservicioDePago",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
