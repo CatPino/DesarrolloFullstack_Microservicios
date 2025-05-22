@@ -23,6 +23,7 @@ public class PagoService {
 
     public List<Pago> obtenerPagosPorUsuarioId(Long idUsuario) {
     List<Pago> pagos = pagoRepository.findPagosByUsuarioId(idUsuario);
+    //EXTRAER DATOS DEL USUARIO//
 
     if (pagos == null || pagos.isEmpty()) {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontraron pagos para el usuario con ID: " + idUsuario);

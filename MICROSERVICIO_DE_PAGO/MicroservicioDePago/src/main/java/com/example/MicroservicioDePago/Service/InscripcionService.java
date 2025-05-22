@@ -21,7 +21,9 @@ public class InscripcionService {
         return inscripcionRepository.findAll();
     }
 
-   public Inscripcion obtenerInscripcionPorId(Long idUsuario) {
+    public Inscripcion obtenerInscripcionPorId(Long idUsuario) {
+
+        //Extraer datos de la inscripcion
         Inscripcion inscripcion = inscripcionRepository.findByIdUsuario(idUsuario).isEmpty() ? null : inscripcionRepository.findByIdUsuario(idUsuario).get(0);
         if (inscripcion == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Inscripción no encontrada para el usuario con ID: " + idUsuario);
