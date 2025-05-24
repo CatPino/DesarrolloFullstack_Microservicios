@@ -52,7 +52,7 @@ public class WebpayController {
     public WebpayController() {
         WebpayOptions options = new WebpayOptions(
             "597055555532", // Código de comercio TEST
-            "579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C", // API Key (puede ser null en TEST)
+            "579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C", 
             IntegrationType.TEST // Ambiente de integración
         );
         
@@ -63,7 +63,7 @@ public class WebpayController {
     private final Map<String, Long> userMap = new HashMap<>();
     private final Map<String, Long> cursoMap = new HashMap<>();
     private final Map<String, Integer> precioMap = new HashMap<>();
-    private final Map<String, String> cuponMap = new HashMap<>(); // Nuevo mapa para cupones
+    private final Map<String, String> cuponMap = new HashMap<>(); 
 
 
     @PostMapping("/crear")
@@ -108,7 +108,7 @@ public class WebpayController {
 
             int precio = (int) Math.round(precioFinal);
 
-            // Generar identificadores únicos
+          
             String buyOrder = "orden-" + UUID.randomUUID();
             String sessionId = UUID.randomUUID().toString();
             String returnUrl = "http://localhost:8080/webpay/confirmar";
@@ -117,7 +117,7 @@ public class WebpayController {
             userMap.put(sessionId, request.getIdUsuario());
             cursoMap.put(sessionId, request.getIdCurso());
             precioMap.put(sessionId, precio);
-            cuponMap.put(sessionId, codigoCupon); // Guardamos el cupón (puede ser null)
+            cuponMap.put(sessionId, codigoCupon); 
 
             // Crear transacción en WebPay
             WebpayPlusTransactionCreateResponse createResponse = transaction.create(
