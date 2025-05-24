@@ -1,6 +1,5 @@
 package com.edutech.gestion_usuario_soporte.repository;
 
-
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.edutech.gestion_usuario_soporte.model.entity.MensajeTicket;

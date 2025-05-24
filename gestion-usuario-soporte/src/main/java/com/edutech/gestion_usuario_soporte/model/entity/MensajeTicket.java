@@ -1,5 +1,6 @@
 package com.edutech.gestion_usuario_soporte.model.entity;
 
+
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
