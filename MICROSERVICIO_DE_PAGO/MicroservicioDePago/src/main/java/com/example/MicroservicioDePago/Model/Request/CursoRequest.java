@@ -7,7 +7,10 @@ import lombok.*;
 public class CursoRequest {
 
     @NotBlank
-    private long id;
-    private String nombre;
-    private double valor;
+    private String idCurso;
+
+    private String tituloCurso;
+
+    private int precio;
+    
 }

@@ -7,9 +7,13 @@ import lombok.*;
 public class UsuarioRequest {
 
     @NotBlank
-    private long id;
-    private String nombre;
-    private String email;
+    private Long id;
+
+    private String primerNombre;
+
+    private String primerApellido;
+    
+    
 
     
 }

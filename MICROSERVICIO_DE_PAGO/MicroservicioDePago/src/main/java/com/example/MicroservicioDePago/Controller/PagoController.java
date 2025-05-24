@@ -20,7 +20,7 @@ public class PagoController {
 
      @GetMapping("/usuario/{idUsuario}")
         public List<Pago> obtenerPagosPorUsuarioId(@PathVariable Long idUsuario) {
-        return sPago.obtenerPagosPorUsuarioId(idUsuario);
+        return sPago.obtenerPagoIdUsuario(idUsuario);
     }
 }
 

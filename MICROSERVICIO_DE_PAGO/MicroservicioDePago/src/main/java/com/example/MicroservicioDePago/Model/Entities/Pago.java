@@ -1,6 +1,7 @@
 package com.example.MicroservicioDePago.Model.Entities;
 
-import java.sql.Date;
+
+import java.time.LocalDate;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -15,19 +16,24 @@ public class Pago {
     @Column(name = "id_pago")
     private long id_Pago;
 
-    @Column(name = "monto", nullable = false)
-    private double monto;
+     @Column(name = "id_usuario", nullable = false)
+    private Long idUsuario;
+
+    @Column(name = "id_curso", nullable = false)
+    private Long idCurso;
+
+    @Column(name = "precio", nullable = false)
+    private int precio;
 
     @Column(name = "fecha_pago", nullable = false)
-    private Date fechaPago;  
+    private LocalDate fechaPago;  
 
-    @ManyToOne
-    @JoinColumn(name = "id_cupon")
-    private Cupon cupon;
 
-    @ManyToOne
-    @JoinColumn(name = "id_inscripcion")
-    private Inscripcion id_inscripcion;
+    @Column(name = "id_cupon", nullable = false)
+    private String codigoCupon;
+
+    @Column(name = "id_transaccion_webpay", length = 50)
+    private String idTransaccionWebpay; 
 }
 
 

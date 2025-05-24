@@ -1,6 +1,6 @@
 package com.example.MicroservicioDePago.Model.Entities;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -22,5 +22,5 @@ public class Inscripcion {
     private long idCurso;    
 
     @Column(name = "fecha_inscripcion", nullable = false)
-    private Date fechaInscripcion;
+    private LocalDate fechaInscripcion;
 }
