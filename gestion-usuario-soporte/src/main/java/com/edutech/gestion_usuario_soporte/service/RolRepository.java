@@ -1,4 +1,4 @@
-package com.edutech.gestion_usuario_soporte.repository;
+package com.edutech.gestion_usuario_soporte.service;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;
