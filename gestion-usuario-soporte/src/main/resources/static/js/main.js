@@ -1,6 +1,5 @@
 const API = "http://localhost:8080/api";
 
-
 function registrar() {
     const nombre = document.getElementById("regNombre").value;
     const correo = document.getElementById("regCorreo").value;
@@ -11,8 +10,15 @@ function registrar() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ nombre, correo, contraseña })
     })
-    .then(res => res.text())
-    .then(msg => alert(msg));
+    .then(res => res.json())
+    .then(data => {
+        if (data.mensaje) {
+            alert(data.mensaje);
+        } else {
+            alert("Registro exitoso");
+        }
+    })
+    .catch(() => alert("Error al registrar usuario"));
 }
 
 function login() {
@@ -24,10 +30,20 @@ function login() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ correo, contraseña })
     })
-    .then(res => res.ok ? res.text() : Promise.reject("Login incorrecto"))
-    .then(msg => {
-        alert(msg);
+    .then(res => {
+        if (!res.ok) throw new Error("Credenciales incorrectas");
+        return res.json();
+    })
+    .then(data => {
+        alert(data.mensaje);
+
+        // Guardar datos del usuario logueado (puedes guardar más si necesitas)
+        sessionStorage.setItem("usuarioId", data.usuario.id);
+        sessionStorage.setItem("usuarioNombre", data.usuario.nombre);
+        sessionStorage.setItem("usuarioCorreo", data.usuario.correo);
+        sessionStorage.setItem("usuarioRol", data.usuario.rol);
+
         window.location.href = "dashboard.html";
     })
-    .catch(err => alert(err));
+    .catch(err => alert(err.message));
 }

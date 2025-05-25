@@ -1,5 +1,7 @@
 package com.edutech.gestion_usuario_soporte.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,6 +23,7 @@ public class Usuario {
     private String correo;
 
     @Column(nullable = false)
+    @JsonIgnore
     private String contraseña;
 
     @ManyToOne

@@ -19,37 +19,50 @@
     <ul id="listaTickets" class="list-group"></ul>
 
     <script>
-        const API = "http://localhost:8081/api";
-        const idUsuario = 1; // Puedes guardar dinámicamente este valor con localStorage
+    const API = "http://localhost:8081/api";
+    const idUsuario = sessionStorage.getItem("usuarioId");
 
-        function crearTicket() {
-            const asunto = document.getElementById("asunto").value;
-            const descripcion = document.getElementById("descripcion").value;
+    if (!idUsuario) {
+        alert("Debes iniciar sesión primero.");
+        window.location.href = "login.html";
+    }
 
-            fetch(`${API}/tickets/crear/${idUsuario}`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ asunto, descripcion })
-            })
-            .then(res => res.text())
-            .then(msg => alert(msg));
-        }
+    function crearTicket() {
+        const asunto = document.getElementById("asunto").value;
+        const descripcion = document.getElementById("descripcion").value;
 
-        function cargarTickets() {
-            fetch(`${API}/tickets/usuario/${idUsuario}`)
-            .then(res => res.json())
-            .then(data => {
-                const lista = document.getElementById("listaTickets");
-                lista.innerHTML = "";
-                data.forEach(ticket => {
-                    const li = document.createElement("li");
-                    li.className = "list-group-item";
-                    li.innerHTML = `<strong>${ticket.asunto}</strong> - ${ticket.descripcion}`;
-                    lista.appendChild(li);
-                });
+        fetch(`${API}/tickets/crear/${idUsuario}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ asunto, descripcion })
+        })
+        .then(res => res.json())
+        .then(data => alert(data.mensaje || "Ticket creado"))
+        .catch(() => alert("Error al crear el ticket"));
+    }
+
+    function cargarTickets() {
+        fetch(`${API}/tickets/usuario/${idUsuario}`)
+        .then(res => res.json())
+        .then(data => {
+            const lista = document.getElementById("listaTickets");
+            lista.innerHTML = "";
+
+            data.forEach(ticket => {
+                const li = document.createElement("li");
+                li.className = "list-group-item";
+                li.innerHTML = `
+                    <strong>${ticket.asunto}</strong><br>
+                    ${ticket.descripcion}<br>
+                    <small class="text-muted">${ticket.fechaCreacion}</small>
+                `;
+                lista.appendChild(li);
             });
-        }
-    </script>
+        })
+        .catch(() => alert("Error al cargar tickets"));
+    }
+</script>
+
 
 </body>
 </html>

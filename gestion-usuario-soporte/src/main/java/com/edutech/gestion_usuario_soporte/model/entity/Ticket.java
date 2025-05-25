@@ -1,8 +1,8 @@
 package com.edutech.gestion_usuario_soporte.model.entity;
 
-
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -21,8 +21,15 @@ public class Ticket {
     @Column(columnDefinition = "TEXT")
     private String descripcion;
 
-    private LocalDateTime fechaCreacion = LocalDateTime.now();
+    private LocalDateTime fechaCreacion;
 
+    @PrePersist
+    protected void onCreate() {
+        this.fechaCreacion = LocalDateTime.now();
+    }
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
