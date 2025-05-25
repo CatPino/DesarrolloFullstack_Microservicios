@@ -4,8 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.util.List;
 
-//import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "evaluaciones")
@@ -24,7 +23,7 @@ public class Evaluacion {
 
     @ManyToOne
     @JoinColumn(name = "curso_id")
-    @JsonIgnore
+    @JsonBackReference
     private Curso curso;
 
     @OneToMany(mappedBy = "evaluacion", cascade = CascadeType.ALL)
