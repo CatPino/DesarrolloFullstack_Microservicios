@@ -23,7 +23,7 @@ public class RolController {
     }
 
    @GetMapping("/{id}")
-public ResponseEntity<?> obtenerPorId(@PathVariable Long id) {
+    public ResponseEntity<?> obtenerPorId(@PathVariable Long id) {
     Optional<Rol> rol = rolService.obtenerPorId(id);
     if (rol.isPresent()) {
         return ResponseEntity.ok(rol.get());
@@ -33,7 +33,7 @@ public ResponseEntity<?> obtenerPorId(@PathVariable Long id) {
 }
 
 
-    @PostMapping
+    @PostMapping 
     public ResponseEntity<?> crear(@RequestBody Rol rol) {
         String mensaje = rolService.crear(rol);
         if (mensaje.contains("existe")) {

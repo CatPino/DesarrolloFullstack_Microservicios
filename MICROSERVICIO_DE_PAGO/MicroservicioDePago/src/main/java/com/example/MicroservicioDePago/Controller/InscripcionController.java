@@ -16,9 +16,9 @@ public class InscripcionController {
     @Autowired
     private InscripcionService sInscripcion;
 
-    @GetMapping("/usuario/{idUsuario}")
-    public Inscripcion obtenerInscripcionPorUsuarioId(@PathVariable Long idUsuario) {
-        return sInscripcion.obtenerInscripcionPorId(idUsuario);
+    @GetMapping("/usuario/{nombre}")
+    public Inscripcion obtenerInscripcionPorUsuarioId(@PathVariable String nombre) {
+        return sInscripcion.obtenerInscripcionPorNombre(nombre);
     }
 }
 

@@ -10,9 +10,9 @@ import com.example.MicroservicioDePago.Model.Entities.Inscripcion;
 @Repository
 public interface InscripcionRepository extends JpaRepository<Inscripcion, Long> {
 
-    Inscripcion findByIdUsuario(Long idUsuario);
+    Inscripcion findByNombre(String nombre);
 
-    Inscripcion findByIdCurso(Long idCurso);
+    Inscripcion findByTitulo(String titulo);
 }
 
 

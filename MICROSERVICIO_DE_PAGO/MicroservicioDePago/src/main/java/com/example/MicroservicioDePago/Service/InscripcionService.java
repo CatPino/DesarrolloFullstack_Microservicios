@@ -22,8 +22,8 @@ public class InscripcionService {
         return inscripcionRepository.findAll();
     }
 
-    public Inscripcion obtenerInscripcionPorId(Long idUsuario) {
-        Inscripcion inscripcion = inscripcionRepository.findByIdUsuario(idUsuario);
+    public Inscripcion obtenerInscripcionPorNombre(String nombre) {
+        Inscripcion inscripcion = inscripcionRepository.findByNombre(nombre);
         if(inscripcion == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"cupon nop encontrado");
         }
@@ -34,8 +34,8 @@ public class InscripcionService {
      public Inscripcion guardarInscripcion(InscripcionRequest inscripcionRequest) {
         try {
             Inscripcion inscripcion = new Inscripcion();
-            inscripcion.setIdUsuario(inscripcionRequest.getIdUsuario());
-            inscripcion.setIdCurso(inscripcionRequest.getIdCurso());
+            inscripcion.setNombre(inscripcionRequest.getNombre());
+            inscripcion.setTitulo(inscripcionRequest.getTitulo());
             inscripcion.setFechaInscripcion(LocalDate.now());
             return inscripcionRepository.save(inscripcion);
         } catch (Exception e) {

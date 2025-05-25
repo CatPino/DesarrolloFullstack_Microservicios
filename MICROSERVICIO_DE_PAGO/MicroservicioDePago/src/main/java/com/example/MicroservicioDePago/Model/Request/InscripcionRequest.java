@@ -9,10 +9,10 @@ import lombok.Data;
 public class InscripcionRequest {
     
     @NotBlank
-    private long idUsuario;
+    private String nombre;
 
     @NotBlank
-    private long idCurso;
+    private String titulo;
 
     private Date fechaInscripcion;
 

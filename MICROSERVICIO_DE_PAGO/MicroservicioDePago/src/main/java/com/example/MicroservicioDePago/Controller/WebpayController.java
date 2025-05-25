@@ -62,8 +62,8 @@ public class WebpayController {
     }
 
     // Memoria temporal para sesión de pago
-    private final Map<String, Long> userMap = new HashMap<>();
-    private final Map<String, Long> cursoMap = new HashMap<>();
+    private final Map<String, String> userMap = new HashMap<>();
+    private final Map<String, String> cursoMap = new HashMap<>();
     private final Map<String, Integer> precioMap = new HashMap<>();
     private final Map<String, String> cuponMap = new HashMap<>(); 
 
@@ -75,7 +75,7 @@ public class WebpayController {
         try {
             // Validar usuario
             UsuarioRequest usuario = webClient.get()
-                .uri("http://localhost:8081/usuarios/" + request.getIdUsuario())
+                .uri("http://localhost:8081/api/auth/usuarios/" + request.getNombre())
                 .retrieve()
                 .bodyToMono(UsuarioRequest.class)
                 .block();
@@ -86,7 +86,7 @@ public class WebpayController {
 
             // Validar curso
             CursoRequest curso = webClient.get()
-                .uri("http://localhost:8082/cursos/" + request.getIdCurso())
+                .uri("http://localhost:8082/api/cursos/" + request.getTitulo())
                 .retrieve()
                 .bodyToMono(CursoRequest.class)
                 .block();
@@ -116,8 +116,8 @@ public class WebpayController {
             String returnUrl = "http://localhost:8080/webpay/confirmar";
 
             // Guardar sesión temporal
-            userMap.put(sessionId, request.getIdUsuario());
-            cursoMap.put(sessionId, request.getIdCurso());
+            userMap.put(sessionId, request.getNombre());
+            cursoMap.put(sessionId, request.getTitulo());
             precioMap.put(sessionId, precio);
             cuponMap.put(sessionId, codigoCupon); 
 
@@ -131,7 +131,7 @@ public class WebpayController {
 
             response.setExito(true);
             response.setUrlPago(createResponse.getUrl() + "?token_ws=" + createResponse.getToken());
-            response.setMensaje("Transacción creada correctamente para el curso: " + curso.getTituloCurso());
+            response.setMensaje("Transacción creada correctamente para curso: " + curso.getTitulo());
 
         } catch (TransactionCreateException e) {
             response.setExito(false);
@@ -155,15 +155,15 @@ public class WebpayController {
         sessionId = commitResponse.getSessionId();
 
         // 2. Obtener datos de sesión
-        Long userId = userMap.get(sessionId);
-        Long cursoId = cursoMap.get(sessionId);
+        String nombre = userMap.get(sessionId);
+        String titulo = cursoMap.get(sessionId);
         int precio = precioMap.get(sessionId);
         String codigoCupon = cuponMap.get(sessionId);
 
         // 3. Registrar inscripción
         InscripcionRequest inscRequest = new InscripcionRequest();
-        inscRequest.setIdUsuario(userId);
-        inscRequest.setIdCurso(cursoId);
+        inscRequest.setNombre(nombre);
+        inscRequest.setTitulo(titulo);
         Inscripcion nuevaInscripcion = sInscripcion.guardarInscripcion(inscRequest);
 
         // 4. Registrar pago

@@ -15,11 +15,11 @@ public class Inscripcion {
     @Column(name = "id_inscripcion")
     private long id_inscripcion;
 
-    @Column(name = "id_usuario", nullable = false)
-    private long idUsuario;  
+    @Column(name = "nombre", nullable = false)
+    private String nombre;  
 
-    @Column(name = "id_curso", nullable = false)
-    private long idCurso;    
+    @Column(name = "titulo", nullable = false)
+    private String titulo;    
 
     @Column(name = "fecha_inscripcion", nullable = false)
     private LocalDate fechaInscripcion;
