@@ -1,8 +1,7 @@
 package com.edutech.gestion_usuario_soporte.controller;
 
 import com.edutech.gestion_usuario_soporte.model.entity.Rol;
-import com.edutech.gestion_usuario_soporte.repository.RolRepository;
-
+import com.edutech.gestion_usuario_soporte.service.RolService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,61 +15,48 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class RolController {
 
-    private final RolRepository rolRepository;
+    private final RolService rolService;
 
     @GetMapping
     public ResponseEntity<List<Rol>> listarRoles() {
-        return ResponseEntity.ok(rolRepository.findAll());
+        return ResponseEntity.ok(rolService.listar());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> obtenerRolPorId(@PathVariable Long id) {
-        return rolRepository.findById(id)
-            .<ResponseEntity<?>>map(ResponseEntity::ok)
-            .orElse(ResponseEntity.status(404).body(Map.of("mensaje", "Rol no encontrado")));
+   @GetMapping("/{id}")
+public ResponseEntity<?> obtenerPorId(@PathVariable Long id) {
+    Optional<Rol> rol = rolService.obtenerPorId(id);
+    if (rol.isPresent()) {
+        return ResponseEntity.ok(rol.get());
+    } else {
+        return ResponseEntity.status(404).body(Map.of("mensaje", "Rol no encontrado"));
+    }
 }
 
 
     @PostMapping
-    public ResponseEntity<?> crearRol(@RequestBody Rol rol) {
-        if (rol.getNombre() == null || rol.getNombre().isBlank()) {
-            return ResponseEntity.badRequest().body(Map.of("mensaje", "El nombre del rol es obligatorio"));
+    public ResponseEntity<?> crear(@RequestBody Rol rol) {
+        String mensaje = rolService.crear(rol);
+        if (mensaje.contains("existe")) {
+            return ResponseEntity.badRequest().body(Map.of("mensaje", mensaje));
         }
-
-        if (rolRepository.existsByNombre(rol.getNombre())) {
-            return ResponseEntity.badRequest().body(Map.of("mensaje", "Ya existe un rol con ese nombre"));
-        }
-
-        Rol nuevoRol = rolRepository.save(rol);
-        return ResponseEntity.ok(Map.of(
-            "mensaje", "Rol creado exitosamente",
-            "rol", nuevoRol
-        ));
+        return ResponseEntity.ok(Map.of("mensaje", mensaje));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> actualizarRol(@PathVariable Long id, @RequestBody Rol nuevoRol) {
-        if (nuevoRol.getNombre() == null || nuevoRol.getNombre().isBlank()) {
-            return ResponseEntity.badRequest().body(Map.of("mensaje", "El nombre del rol es obligatorio"));
+    public ResponseEntity<?> actualizar(@PathVariable Long id, @RequestBody Rol nuevoRol) {
+        String mensaje = rolService.actualizar(id, nuevoRol);
+        if (mensaje.contains("no encontrado")) {
+            return ResponseEntity.status(404).body(Map.of("mensaje", mensaje));
         }
-
-        return rolRepository.findById(id).map(rol -> {
-            rol.setNombre(nuevoRol.getNombre());
-            rolRepository.save(rol);
-            return ResponseEntity.ok(Map.of(
-                "mensaje", "Rol actualizado exitosamente",
-                "rol", rol
-            ));
-        }).orElse(ResponseEntity.status(404).body(Map.of("mensaje", "Rol no encontrado")));
+        return ResponseEntity.ok(Map.of("mensaje", mensaje));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> eliminarRol(@PathVariable Long id) {
-        if (!rolRepository.existsById(id)) {
-            return ResponseEntity.status(404).body(Map.of("mensaje", "Rol no encontrado"));
+    public ResponseEntity<?> eliminar(@PathVariable Long id) {
+        String mensaje = rolService.eliminar(id);
+        if (mensaje.contains("no encontrado")) {
+            return ResponseEntity.status(404).body(Map.of("mensaje", mensaje));
         }
-
-        rolRepository.deleteById(id);
-        return ResponseEntity.ok(Map.of("mensaje", "Rol eliminado exitosamente"));
+        return ResponseEntity.ok(Map.of("mensaje", mensaje));
     }
 }

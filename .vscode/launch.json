@@ -9,27 +9,6 @@
             "projectName": "MicroservicioDePago",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
-        },
-        {
-            "type": "java",
-            "name": "Spring Boot-GestionAcademicaApplication<gestion-academica>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "mainClass": "com.edutech.gestion_academica.GestionAcademicaApplication",
-            "projectName": "gestion-academica",
-            "args": "",
-            "envFile": "${workspaceFolder}/.env",
-            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=51133 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=gestion-academica"
-        },
-        {
-            "type": "java",
-            "name": "Spring Boot-GestionUsuarioSoporteApplication<gestion-usuario-soporte>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "mainClass": "com.edutech.gestion_usuario_soporte.GestionUsuarioSoporteApplication",
-            "projectName": "gestion-usuario-soporte",
-            "args": "",
-            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }
