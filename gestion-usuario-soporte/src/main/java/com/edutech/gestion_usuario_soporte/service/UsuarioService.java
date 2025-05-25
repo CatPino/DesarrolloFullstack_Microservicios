@@ -48,4 +48,11 @@ public class UsuarioService {
     public List<Usuario> listarUsuarios() {
         return usuarioRepository.findAll();
     }
+
+    public Usuario obtenerCursoPorNombre(String nombre) {
+        Usuario nombreUsuario = usuarioRepository.findByNombre(nombre);
+        if (nombreUsuario == null)
+            throw new RuntimeException("Curso no encontrado");
+        return nombreUsuario;
+    }
 }

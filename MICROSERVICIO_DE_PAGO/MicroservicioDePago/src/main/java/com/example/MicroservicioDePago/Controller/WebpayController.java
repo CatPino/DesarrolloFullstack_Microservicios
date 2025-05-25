@@ -75,7 +75,7 @@ public class WebpayController {
         try {
             // Validar usuario
             UsuarioRequest usuario = webClient.get()
-                .uri("http://localhost:8081/api/auth/usuarios/" + request.getNombre())
+                .uri("http://localhost:8081/api/auth/usuario/" + request.getNombre())
                 .retrieve()
                 .bodyToMono(UsuarioRequest.class)
                 .block();
@@ -86,7 +86,7 @@ public class WebpayController {
 
             // Validar curso
             CursoRequest curso = webClient.get()
-                .uri("http://localhost:8082/api/cursos/" + request.getTitulo())
+                .uri("http://localhost:8082/api/cursos/titulo/" + request.getTitulo())
                 .retrieve()
                 .bodyToMono(CursoRequest.class)
                 .block();

@@ -53,4 +53,11 @@ public class AuthController {
     public List<Usuario> listarUsuarios() {
         return usuarioService.listarUsuarios();
     }
+
+    @GetMapping("/usuario/{nombre}")
+    public Usuario obtenerNombre(@PathVariable String nombre) {
+        return usuarioService.obtenerCursoPorNombre(nombre);
+    }
+
+    
 }
