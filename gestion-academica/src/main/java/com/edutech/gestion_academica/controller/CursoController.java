@@ -33,4 +33,10 @@ public class CursoController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @GetMapping("/titulo/{titulo}")
+    public Curso obtenerCursoPorTitulo(@PathVariable String titulo) {
+        return cursoService.obtenerCursoPorTitulo(titulo);
+    }
+
 }

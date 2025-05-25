@@ -15,7 +15,7 @@ public class PreguntaController {
 
     private final PreguntaService preguntaService;
 
-    @PostMapping("/crear")
+    @PostMapping("/crearPregunta")
     public ResponseEntity<Pregunta> crearPregunta(@RequestBody Pregunta pregunta) {
         Pregunta nuevaPregunta = preguntaService.crearPregunta(pregunta);
         return ResponseEntity.ok(nuevaPregunta);
