@@ -1,24 +1,22 @@
 package com.example.MicroservicioDePago.Model.Request;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 import lombok.Data;
 
 @Data
 public class PagoRequest {
-
+    
     private int precio;
+    
+    private LocalDate fechaPago;
 
-    private Date fechaPago;  
+    private String idTransaccionWebpay;
 
-    private String codigoCupon;
+    private Long idInscripcion; // FK a Inscripcion
 
-    private Long idUsuario;
-
-    private Long idCurso; 
-
+    private Long idCupon;       // FK a Cupon
 }
-
 
     
     

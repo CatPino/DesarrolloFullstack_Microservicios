@@ -7,7 +7,10 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.example.MicroservicioDePago.Model.Entities.Cupon;
+import com.example.MicroservicioDePago.Model.Entities.Inscripcion;
+import com.example.MicroservicioDePago.Model.Request.CompraRequest;
 import com.example.MicroservicioDePago.Model.Request.CursoRequest;
+import com.example.MicroservicioDePago.Model.Request.InscripcionRequest;
 import com.example.MicroservicioDePago.Model.Request.PagoRequest;
 import com.example.MicroservicioDePago.Model.Request.UsuarioRequest;
 import com.example.MicroservicioDePago.Model.Response.ConfirmarResponse;
@@ -18,13 +21,12 @@ import com.example.MicroservicioDePago.Service.PagoService;
 
 import cl.transbank.common.IntegrationType;
 import cl.transbank.webpay.common.WebpayOptions;
-import cl.transbank.webpay.exception.TransactionCommitException;
+
 import cl.transbank.webpay.exception.TransactionCreateException;
 import cl.transbank.webpay.webpayplus.WebpayPlus;
 import cl.transbank.webpay.webpayplus.responses.WebpayPlusTransactionCommitResponse;
 import cl.transbank.webpay.webpayplus.responses.WebpayPlusTransactionCreateResponse;
 
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -67,7 +69,7 @@ public class WebpayController {
 
 
     @PostMapping("/crear")
-    public InicioPagoResponse iniciarPago(@RequestBody PagoRequest request) {
+    public InicioPagoResponse iniciarPago(@RequestBody CompraRequest request) {
         InicioPagoResponse response = new InicioPagoResponse();
 
         try {
@@ -129,7 +131,7 @@ public class WebpayController {
 
             response.setExito(true);
             response.setUrlPago(createResponse.getUrl() + "?token_ws=" + createResponse.getToken());
-            response.setMensaje("Transacción creada correctamente");
+            response.setMensaje("Transacción creada correctamente para el curso: " + curso.getTituloCurso());
 
         } catch (TransactionCreateException e) {
             response.setExito(false);
@@ -144,42 +146,58 @@ public class WebpayController {
 
     @GetMapping("/confirmar")
     public ConfirmarResponse confirmarPago(@RequestParam("token_ws") String tokenWs) {
-        ConfirmarResponse response = new ConfirmarResponse();
+    ConfirmarResponse response = new ConfirmarResponse();
+    String sessionId = null;
 
-        try {
-            // Confirmar transacción con WebPay
-            WebpayPlusTransactionCommitResponse commitResponse = transaction.commit(tokenWs);
+    try {
+        // 1. Confirmar transacción WebPay
+        WebpayPlusTransactionCommitResponse commitResponse = transaction.commit(tokenWs);
+        sessionId = commitResponse.getSessionId();
 
-            // Recuperar datos de sesión (incluyendo cupón)
-            String sessionId = commitResponse.getSessionId();
-            Long userId = userMap.get(sessionId);
-            Long cursoId = cursoMap.get(sessionId);
-            Integer precio = precioMap.get(sessionId);
-            String codigoCupon = cuponMap.get(sessionId); // Obtenemos el cupón
+        // 2. Obtener datos de sesión
+        Long userId = userMap.get(sessionId);
+        Long cursoId = cursoMap.get(sessionId);
+        int precio = precioMap.get(sessionId);
+        String codigoCupon = cuponMap.get(sessionId);
 
-            // Guardar en base de datos
-            sPago.guardarPago(userId, cursoId, precio, LocalDate.now(), codigoCupon, commitResponse.getBuyOrder());
+        // 3. Registrar inscripción
+        InscripcionRequest inscRequest = new InscripcionRequest();
+        inscRequest.setIdUsuario(userId);
+        inscRequest.setIdCurso(cursoId);
+        Inscripcion nuevaInscripcion = sInscripcion.guardarInscripcion(inscRequest);
 
-            // Crear inscripción
-            sInscripcion.registrarInscripcion(userId, cursoId, LocalDate.now());
+        // 4. Registrar pago
+        PagoRequest pagoRequest = new PagoRequest();
+        pagoRequest.setPrecio(precio);
+        pagoRequest.setFechaPago(nuevaInscripcion.getFechaInscripcion());
+        pagoRequest.setIdTransaccionWebpay(commitResponse.getBuyOrder());
+        pagoRequest.setIdInscripcion(nuevaInscripcion.getId_inscripcion());
+        
+        if (codigoCupon != null && !codigoCupon.isEmpty()) {
+            Cupon cupon = sCupon.validarCupon(codigoCupon);
+            pagoRequest.setIdCupon(cupon.getIdCupon());
+        }
 
-            // Limpiar datos temporales (incluyendo cupón)
+        sPago.guardarNuevo(pagoRequest);
+
+        // 5. Configurar respuesta
+        response.setExito(true);
+        response.setMensaje("Pago e inscripción registrados exitosamente ");
+
+    } catch (ResponseStatusException e) {
+        throw e;
+    } catch (Exception e) {
+        response.setExito(false);
+        response.setMensaje("Error al confirmar pago: " + e.getMessage());
+    } finally {
+        // 6. Limpieza segura
+        if (sessionId != null) {
             userMap.remove(sessionId);
             cursoMap.remove(sessionId);
             precioMap.remove(sessionId);
             cuponMap.remove(sessionId);
-
-            response.setExito(true);
-            response.setMensaje("Pago exitoso e inscripción registrada. ID Transacción: " + commitResponse.getBuyOrder());
-
-        } catch (TransactionCommitException e) {
-            response.setExito(false);
-            response.setMensaje("Error al confirmar el pago con WebPay: " + e.getMessage());
-        } catch (Exception e) {
-            response.setExito(false);
-            response.setMensaje("Error al procesar la confirmación: " + e.getMessage());
         }
-
-        return response;
+    }
+    return response;
     }
 }
