@@ -1,14 +1,19 @@
 package com.example.MicroservicioDePago.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.example.MicroservicioDePago.Model.Entities.Cupon;
+import com.example.MicroservicioDePago.Model.Entities.Inscripcion;
 import com.example.MicroservicioDePago.Model.Entities.Pago;
+import com.example.MicroservicioDePago.Model.Request.PagoRequest;
+import com.example.MicroservicioDePago.Repository.CuponRepository;
+import com.example.MicroservicioDePago.Repository.InscripcionRepository;
 import com.example.MicroservicioDePago.Repository.PagoRepository;
 
 @Service
@@ -17,35 +22,44 @@ public class PagoService {
     @Autowired
     private PagoRepository pagoRepository;
 
+    @Autowired
+    private CuponRepository cuponRepository;
+
+    @Autowired
+    private InscripcionRepository inscripcionRepository;
+
+
     public List<Pago> obtenerTodosLosPagos() {
         return pagoRepository.findAll();
     }
-
-    public List<Pago> obtenerPagoIdUsuario(Long idUsuario) {
-    //Extraer datos de BD
-    List<Pago> pagos = pagoRepository.findByIdUsuario(idUsuario);
-    if (pagos == null || pagos.isEmpty()) {
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontraron pagos para el usuario con ID: " + idUsuario);
-    }
-
-    return pagos;
-    }
-
-    public Pago guardarPago(Long userId, Long cursoId, int precio, LocalDate fechaPago, String codigoCupon, String idTransaccionWebpay) {
-        try {
-            Pago pago = new Pago();
-            pago.setIdUsuario(userId);
-            pago.setIdCurso(cursoId);
-            pago.setPrecio(precio);
-            pago.setFechaPago(LocalDate.now());
-            pago.setCodigoCupon(codigoCupon);
-            pago.setIdTransaccionWebpay(idTransaccionWebpay);
-
-            return pagoRepository.save(pago);
-
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al registrar el pago: " + e.getMessage(), e);
+    
+    public Pago obtenerPagoPorId(Long idPago) {
+        Pago pago = pagoRepository.findByIdPago(idPago);  // Llama al método de la instancia
+        if(pago == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pago no encontrado");
         }
+        return pago;
+    }
+    
+    public Pago guardarNuevo(PagoRequest pagoRequest) {
+    Pago nuevoPago = new Pago();
+
+    nuevoPago.setPrecio(pagoRequest.getPrecio());
+    nuevoPago.setFechaPago(pagoRequest.getFechaPago());
+    nuevoPago.setIdTransaccionWebpay(pagoRequest.getIdTransaccionWebpay());
+
+        if (pagoRequest.getIdCupon() != null) {
+                Cupon cupon = cuponRepository.getReferenceById(pagoRequest.getIdCupon());
+            nuevoPago.setCupon(cupon);
+            }
+
+            // Asignar Inscripción (solo referencia)
+        if (pagoRequest.getIdInscripcion() != null) {
+                Inscripcion inscripcion = inscripcionRepository.getReferenceById(pagoRequest.getIdInscripcion());
+            nuevoPago.setInscripcion(inscripcion);
+        }
+    
+
+    return pagoRepository.save(nuevoPago);  // No olvides guardar el pago
     }
 }
-

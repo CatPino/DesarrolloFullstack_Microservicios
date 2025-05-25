@@ -14,13 +14,7 @@ public class Pago {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_pago")
-    private long id_Pago;
-
-     @Column(name = "id_usuario", nullable = false)
-    private Long idUsuario;
-
-    @Column(name = "id_curso", nullable = false)
-    private Long idCurso;
+    private long idPago;
 
     @Column(name = "precio", nullable = false)
     private int precio;
@@ -28,12 +22,16 @@ public class Pago {
     @Column(name = "fecha_pago", nullable = false)
     private LocalDate fechaPago;  
 
-
-    @Column(name = "id_cupon", nullable = false)
-    private String codigoCupon;
-
     @Column(name = "id_transaccion_webpay", length = 50)
     private String idTransaccionWebpay; 
+
+    @ManyToOne
+    @JoinColumn(name = "id_Inscripcion") // nombre de la columna FK en la tabla estudiante
+    private Inscripcion inscripcion;
+
+    @ManyToOne
+    @JoinColumn(name = "id_cupon") // nombre de la columna FK en la tabla estudiante
+    private Cupon Cupon;
 }
 
 

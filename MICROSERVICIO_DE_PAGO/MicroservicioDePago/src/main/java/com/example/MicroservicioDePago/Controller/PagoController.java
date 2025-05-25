@@ -1,7 +1,5 @@
 package com.example.MicroservicioDePago.Controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,11 +16,12 @@ public class PagoController {
     @Autowired
     private PagoService sPago;
 
-     @GetMapping("/usuario/{idUsuario}")
-        public List<Pago> obtenerPagosPorUsuarioId(@PathVariable Long idUsuario) {
-        return sPago.obtenerPagoIdUsuario(idUsuario);
+     @GetMapping("/{idPago}")
+    public Pago obtenerPagoPorId(@PathVariable Long idPago) {
+        return sPago.obtenerPagoPorId(idPago); 
     }
 }
+
 
 
     

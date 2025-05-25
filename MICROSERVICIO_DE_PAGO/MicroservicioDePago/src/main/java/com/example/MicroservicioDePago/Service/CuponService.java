@@ -25,21 +25,16 @@ public class CuponService {
         return cuponRepository.findAll();
     }
 
-    public Cupon obtenerCuponPorCodigo(String codigo) {
-        Cupon cupon = cuponRepository.findByCodigo(codigo);
-        if (cupon == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cupón no encontrado");
+    public Cupon obtenerPorCodigo(String codigo){
+        Cupon cupon =  cuponRepository.findByCodigo(codigo);
+        if(cupon == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"cupon no encontrado");
         }
         return cupon;
     }
 
-     public Cupon registrarCupon(CuponRequest cuponRequest) {
-    try {
-        Cupon cuponExistente = cuponRepository.findByCodigo(cuponRequest.getCodigo());
-
-        if (cuponExistente != null) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Ya existe un cupón con ese código");
-        }
+    public Cupon registrarCupon(CuponRequest cuponRequest) {
+    
         Cupon nuevoCupon = new Cupon();
         nuevoCupon.setCodigo(cuponRequest.getCodigo());
         nuevoCupon.setDescuento(cuponRequest.getDescuento());
@@ -47,12 +42,6 @@ public class CuponService {
         nuevoCupon.setFechaExpiracion(cuponRequest.getFechaExpiracion());
 
         return cuponRepository.save(nuevoCupon);
-
-    } catch (ResponseStatusException e) {
-        throw e; 
-    } catch (Exception e) {
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error al registrar el cupón", e);
-    }
 }
 
 
