@@ -9,16 +9,6 @@
             "projectName": "MicroservicioDePago",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
-        },
-        {
-            "type": "java",
-            "name": "Spring Boot-GestionUsuarioSoporteApplication<gestion-usuario-soporte>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "mainClass": "com.edutech.gestion_usuario_soporte.GestionUsuarioSoporteApplication",
-            "projectName": "gestion-usuario-soporte",
-            "args": "",
-            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }

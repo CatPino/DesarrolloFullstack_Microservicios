@@ -25,4 +25,11 @@ public class CursoService {
     public Optional<Curso> obtenerCursoPorId(Long id) {
         return cursoRepository.findById(id);
     }
+
+    public Curso obtenerCursoPorTitulo(String titulo) {
+        Curso curso = cursoRepository.findByTitulo(titulo);
+        if (curso == null)
+            throw new RuntimeException("Curso no encontrado");
+        return curso;
+    }
 }

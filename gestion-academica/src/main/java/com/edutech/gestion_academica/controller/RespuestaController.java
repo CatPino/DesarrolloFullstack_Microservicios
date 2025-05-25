@@ -15,7 +15,7 @@ public class RespuestaController {
 
     private final RespuestaService respuestaService;
 
-    @PostMapping("/crear")
+    @PostMapping("/crearRespuesta")
     public ResponseEntity<Respuesta> crearRespuesta(@RequestBody Respuesta respuesta) {
         return ResponseEntity.ok(respuestaService.crearRespuesta(respuesta));
     }
