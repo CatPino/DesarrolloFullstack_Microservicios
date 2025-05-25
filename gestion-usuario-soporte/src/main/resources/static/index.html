@@ -36,7 +36,7 @@
     <button class="btn btn-success" onclick="registrar()">Registrar</button>
 
     <script>
-        const API = "http://localhost:8080/api";
+        const API = "http://localhost:8081/api";
 
         // Si ya hay sesión activa, redirigir
         if (sessionStorage.getItem("usuarioId")) {
@@ -44,24 +44,26 @@
         }
 
         function registrar() {
-            const nombre = document.getElementById("regNombre").value.trim();
-            const correo = document.getElementById("regCorreo").value.trim();
-            const contraseña = document.getElementById("regPass").value;
+    const nombre = document.getElementById("regNombre").value.trim();
+    const correo = document.getElementById("regCorreo").value.trim();
+    const contraseña = document.getElementById("regPass").value;
 
-            if (!nombre || !correo || !contraseña) {
-                return alert("Completa todos los campos de registro");
-            }
+    if (!nombre || !correo || !contraseña) {
+        return alert("Nombre, correo y contraseña son obligatorios");
+    }
 
-            fetch(`${API}/auth/registro`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ nombre, correo, contraseña })
-            })
-            .then(res => res.json())
-            .then(data => alert(data.mensaje || "Registro exitoso"))
-            .catch(() => alert("Error al registrar usuario"));
-        }
-
+    fetch(`${API}/auth/registro`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nombre, correo, contraseña })
+    })
+    .then(res => res.json().then(data => {
+        if (!res.ok) throw new Error(data.mensaje || "Error desconocido");
+        return data;
+    }))
+    .then(data => alert(data.mensaje || "Registro exitoso"))
+    .catch(err => alert("Error al registrar usuario:\n" + err.message));
+}
         function login() {
             const correo = document.getElementById("loginCorreo").value.trim();
             const contraseña = document.getElementById("loginPass").value;
