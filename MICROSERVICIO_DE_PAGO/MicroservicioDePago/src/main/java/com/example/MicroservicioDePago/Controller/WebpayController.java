@@ -111,9 +111,9 @@ public class WebpayController {
             int precio = (int) Math.round(precioFinal);
 
           
-            String buyOrder = "orden-" + UUID.randomUUID();
+            String buyOrder = "orden-" + UUID.randomUUID().toString().substring(0, 16);
             String sessionId = UUID.randomUUID().toString();
-            String returnUrl = "http://localhost:8080/webpay/confirmar";
+            String returnUrl = "http://localhost:8083/webpay/confirmar";
 
             // Guardar sesión temporal
             userMap.put(sessionId, request.getNombre());
