@@ -17,7 +17,7 @@ public class InscripcionController {
     private InscripcionService sInscripcion;
 
     @GetMapping("/usuario/{nombre}")
-    public Inscripcion obtenerInscripcionPorUsuarioId(@PathVariable String nombre) {
+    public Inscripcion obtenerInscripcionPorNombre(@PathVariable String nombre) {
         return sInscripcion.obtenerInscripcionPorNombre(nombre);
     }
 }

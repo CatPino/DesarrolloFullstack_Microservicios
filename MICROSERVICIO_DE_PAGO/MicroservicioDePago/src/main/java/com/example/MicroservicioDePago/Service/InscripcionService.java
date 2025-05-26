@@ -25,7 +25,7 @@ public class InscripcionService {
     public Inscripcion obtenerInscripcionPorNombre(String nombre) {
         Inscripcion inscripcion = inscripcionRepository.findByNombre(nombre);
         if(inscripcion == null){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"cupon nop encontrado");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"cupon no encontrado");
         }
         return inscripcion;
     }
