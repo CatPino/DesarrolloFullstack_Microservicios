@@ -34,7 +34,7 @@ public class PagoService {
     }
     
     public Pago obtenerPagoPorId(Long idPago) {
-        Pago pago = pagoRepository.findByIdPago(idPago);  // Llama al método de la instancia
+        Pago pago = pagoRepository.findByIdPago(idPago); 
         if(pago == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pago no encontrado");
         }
@@ -53,13 +53,12 @@ public class PagoService {
             nuevoPago.setCupon(cupon);
             }
 
-            // Asignar Inscripción (solo referencia)
         if (pagoRequest.getIdInscripcion() != null) {
                 Inscripcion inscripcion = inscripcionRepository.getReferenceById(pagoRequest.getIdInscripcion());
             nuevoPago.setInscripcion(inscripcion);
         }
     
 
-    return pagoRepository.save(nuevoPago);  // No olvides guardar el pago
+    return pagoRepository.save(nuevoPago); 
     }
 }

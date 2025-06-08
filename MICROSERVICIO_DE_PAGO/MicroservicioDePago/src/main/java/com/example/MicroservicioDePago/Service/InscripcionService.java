@@ -44,4 +44,8 @@ public class InscripcionService {
         }
     }
 
+    public Inscripcion buscarPorNombreYTitulo(String nombre, String titulo) {
+        return inscripcionRepository.findByNombreAndTitulo(nombre, titulo);
+    }
+
 }
