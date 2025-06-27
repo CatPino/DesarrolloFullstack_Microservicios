@@ -48,4 +48,12 @@ public class InscripcionService {
         return inscripcionRepository.findByNombreAndTitulo(nombre, titulo);
     }
 
+    public void eliminarInscripcionPorNombre(String nombre) {
+    Inscripcion inscripcion = inscripcionRepository.findByNombre(nombre);
+    if (inscripcion == null) {
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Inscripción no encontrada para el nombre: " + nombre);
+    }
+    inscripcionRepository.delete(inscripcion);
+}
+
 }

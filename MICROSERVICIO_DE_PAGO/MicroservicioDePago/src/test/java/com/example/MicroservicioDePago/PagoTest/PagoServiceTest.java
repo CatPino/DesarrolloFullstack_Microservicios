@@ -73,4 +73,9 @@ public class PagoServiceTest {
         assertEquals(cupon.getIdCupon(), pagoCreado.getCupon().getIdCupon());
         assertEquals("TXN123456", pagoCreado.getIdTransaccionWebpay());
     }
+    @Test
+    public void testBuscarInscripcionNoExistente() {
+        Inscripcion inscripcion = sInscripcion.buscarPorNombreYTitulo("nombreInexistente", "tituloInexistente");
+        assertEquals(null, inscripcion);
+    }
 }
