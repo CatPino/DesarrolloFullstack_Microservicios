@@ -26,6 +26,7 @@ import cl.transbank.webpay.exception.TransactionCreateException;
 import cl.transbank.webpay.webpayplus.WebpayPlus;
 import cl.transbank.webpay.webpayplus.responses.WebpayPlusTransactionCommitResponse;
 import cl.transbank.webpay.webpayplus.responses.WebpayPlusTransactionCreateResponse;
+import io.swagger.v3.oas.annotations.Operation;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -50,12 +51,11 @@ public class WebpayController {
     // Configuración Webpay Plus
     private final WebpayPlus.Transaction transaction;
 
-    // Configuración CORRECTA para WebpayPlus (versión 6.0.0+)
     public WebpayController() {
         WebpayOptions options = new WebpayOptions(
-            "597055555532", // Código de comercio TEST
+            "597055555532", 
             "579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C", 
-            IntegrationType.TEST // Ambiente de integración
+            IntegrationType.TEST 
         );
         
         this.transaction = new WebpayPlus.Transaction(options);
@@ -69,6 +69,7 @@ public class WebpayController {
 
 
     @PostMapping("/crear")
+    @Operation(summary = "Iniciar pago con WebPay",description = "Crea una transacción con WebPay, valida al usuario y el curso, aplica descuento si hay cupón, y devuelve la URL para realizar el pago.")
     public InicioPagoResponse iniciarPago(@RequestBody CompraRequest request) {
         InicioPagoResponse response = new InicioPagoResponse();
 
@@ -145,6 +146,7 @@ public class WebpayController {
     }
 
     @GetMapping("/confirmar")
+    @Operation(summary = "Confirmar pago WebPay",description = "Confirma la transacción con WebPay, registra la inscripción del usuario y guarda el pago realizado. Limpia la sesión temporal después de confirmar.")
     public ConfirmarResponse confirmarPago(@RequestParam("token_ws") String tokenWs) {
     ConfirmarResponse response = new ConfirmarResponse();
     String sessionId = null;

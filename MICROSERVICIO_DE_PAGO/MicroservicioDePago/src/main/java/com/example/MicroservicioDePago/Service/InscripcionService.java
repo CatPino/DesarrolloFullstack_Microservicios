@@ -25,7 +25,7 @@ public class InscripcionService {
     public Inscripcion obtenerInscripcionPorNombre(String nombre) {
         Inscripcion inscripcion = inscripcionRepository.findByNombre(nombre);
         if(inscripcion == null){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"cupon no encontrado");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"inscripcion no encontrada");
         }
         return inscripcion;
     }
@@ -47,5 +47,13 @@ public class InscripcionService {
     public Inscripcion buscarPorNombreYTitulo(String nombre, String titulo) {
         return inscripcionRepository.findByNombreAndTitulo(nombre, titulo);
     }
+
+    public void eliminarInscripcionPorNombre(String nombre) {
+    Inscripcion inscripcion = inscripcionRepository.findByNombre(nombre);
+    if (inscripcion == null) {
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Inscripción no encontrada para el nombre: " + nombre);
+    }
+    inscripcionRepository.delete(inscripcion);
+}
 
 }

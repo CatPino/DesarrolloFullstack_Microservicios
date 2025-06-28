@@ -61,4 +61,12 @@ public class PagoService {
 
     return pagoRepository.save(nuevoPago); 
     }
+
+    public void eliminarPagoPorId(Long idPago) {
+    Pago pago = pagoRepository.findByIdPago(idPago);
+    if (pago == null) {
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pago no encontrado para id: " + idPago);
+    }
+    pagoRepository.delete(pago);
+}
 }

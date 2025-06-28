@@ -26,11 +26,8 @@ public class CuponService {
     }
 
     public Cupon obtenerPorCodigo(String codigo){
-        Cupon cupon =  cuponRepository.findByCodigo(codigo);
-        if(cupon == null){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"cupon no encontrado");
-        }
-        return cupon;
+        return cuponRepository.findByCodigo(codigo);
+        
     }
 
     public Cupon registrarCupon(CuponRequest cuponRequest) {
