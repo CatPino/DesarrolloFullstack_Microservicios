@@ -20,4 +20,14 @@ public class EvaluacionService {
     public List<Evaluacion> listarPorCurso(Long cursoId) {
         return evaluacionRepository.findByCursoId(cursoId);
     }
+
+    // Nuevo método para listar todas las evaluaciones
+    public List<Evaluacion> listarEvaluaciones() {
+        return evaluacionRepository.findAll();
+    }
+
+    // Nuevo método para eliminar una evaluación por ID
+    public void eliminarEvaluacion(Long id) {
+        evaluacionRepository.deleteById(id);
+    }
 }

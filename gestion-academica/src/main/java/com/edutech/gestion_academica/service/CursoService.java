@@ -32,4 +32,9 @@ public class CursoService {
             throw new RuntimeException("Curso no encontrado");
         return curso;
     }
+
+    public void eliminarCurso(Long id) {
+        cursoRepository.deleteById(id);
+    }
+
 }

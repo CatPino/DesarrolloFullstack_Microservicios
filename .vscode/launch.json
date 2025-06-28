@@ -19,6 +19,16 @@
             "projectName": "gestion-usuario-soporte",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-GestionAcademicaApplication<gestion-academica>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.edutech.gestion_academica.GestionAcademicaApplication",
+            "projectName": "gestion-academica",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }
