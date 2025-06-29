@@ -1,6 +1,7 @@
 package com.edutech.gestion_usuario_soporte.service;
 
 import com.edutech.gestion_usuario_soporte.model.entity.Rol;
+import com.edutech.gestion_usuario_soporte.model.request.RolRequest;
 import com.edutech.gestion_usuario_soporte.repository.RolRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,11 +23,15 @@ public class RolService {
         return rolRepository.findById(id);
     }
 
-    public String crear(Rol rol) {
-        if (rolRepository.existsByNombre(rol.getNombre())) {
+    public String crear(RolRequest request) {
+        if (rolRepository.existsByNombre(request.getNombre())) {
             return "Ya existe un rol con ese nombre.";
         }
+
+        Rol rol = new Rol();
+        rol.setNombre(request.getNombre());
         rolRepository.save(rol);
+
         return "Rol creado exitosamente";
     }
 

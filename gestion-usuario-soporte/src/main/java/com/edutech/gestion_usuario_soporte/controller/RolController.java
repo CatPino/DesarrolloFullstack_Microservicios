@@ -1,6 +1,7 @@
 package com.edutech.gestion_usuario_soporte.controller;
 
 import com.edutech.gestion_usuario_soporte.model.entity.Rol;
+import com.edutech.gestion_usuario_soporte.model.request.RolRequest;
 import com.edutech.gestion_usuario_soporte.service.RolService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,20 +23,19 @@ public class RolController {
         return ResponseEntity.ok(rolService.listar());
     }
 
-   @GetMapping("/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> obtenerPorId(@PathVariable Long id) {
-    Optional<Rol> rol = rolService.obtenerPorId(id);
-    if (rol.isPresent()) {
-        return ResponseEntity.ok(rol.get());
-    } else {
-        return ResponseEntity.status(404).body(Map.of("mensaje", "Rol no encontrado"));
+        Optional<Rol> rol = rolService.obtenerPorId(id);
+        if (rol.isPresent()) {
+            return ResponseEntity.ok(rol.get());
+        } else {
+            return ResponseEntity.status(404).body(Map.of("mensaje", "Rol no encontrado"));
+        }
     }
-}
 
-
-    @PostMapping 
-    public ResponseEntity<?> crear(@RequestBody Rol rol) {
-        String mensaje = rolService.crear(rol);
+    @PostMapping
+    public ResponseEntity<?> crear(@RequestBody RolRequest request) {
+        String mensaje = rolService.crear(request);
         if (mensaje.contains("existe")) {
             return ResponseEntity.badRequest().body(Map.of("mensaje", mensaje));
         }

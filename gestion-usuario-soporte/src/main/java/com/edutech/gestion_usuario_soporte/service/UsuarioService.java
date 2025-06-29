@@ -2,6 +2,7 @@ package com.edutech.gestion_usuario_soporte.service;
 
 import com.edutech.gestion_usuario_soporte.model.entity.Rol;
 import com.edutech.gestion_usuario_soporte.model.entity.Usuario;
+import com.edutech.gestion_usuario_soporte.model.request.UsuarioRequest;
 import com.edutech.gestion_usuario_soporte.repository.RolRepository;
 import com.edutech.gestion_usuario_soporte.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,40 +20,44 @@ public class UsuarioService {
     private final RolRepository rolRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public Optional<Usuario> login(String correo, String contraseña) {
+    public Optional<Usuario> login(String correo, String contrasena) {
+        if (correo == null || correo.isEmpty() || contrasena == null || contrasena.isEmpty()) {
+            return Optional.empty();
+        }
+
         Optional<Usuario> usuario = usuarioRepository.findByCorreo(correo);
-        if (usuario.isPresent() && passwordEncoder.matches(contraseña, usuario.get().getContraseña())) {
+        if (usuario.isPresent() && passwordEncoder.matches(contrasena, usuario.get().getContrasena())) {
             return usuario;
         }
         return Optional.empty();
     }
 
-    public String registrar(Usuario usuario) {
-    
+    public String registrar(UsuarioRequest usuarioRequest) {
+        if (usuarioRepository.existsByCorreo(usuarioRequest.getCorreo())) {
+            return "Correo ya registrado";
+        }
 
-    if (usuarioRepository.existsByCorreo(usuario.getCorreo())) {
-        return "Correo ya registrado";
+        Optional<Rol> rol = rolRepository.findByNombre("ALUMNO");
+        if (rol.isEmpty()) {
+            return "Rol ALUMNO no existe";
+        }
+
+        Usuario usuario = new Usuario();
+        usuario.setCorreo(usuarioRequest.getCorreo());
+        usuario.setPrimerNombre(usuarioRequest.getNombre());
+        usuario.setContrasena(passwordEncoder.encode(usuarioRequest.getContrasena()));
+        usuario.setRol(rol.get());
+
+        usuarioRepository.save(usuario);
+        return "Usuario registrado exitosamente";
     }
-
-    Optional<Rol> rol = rolRepository.findByNombre("ALUMNO");
-    if (rol.isEmpty()) {
-        return "Rol ALUMNO no existe";
-    }
-
-    usuario.setRol(rol.get());
-    usuario.setContraseña(passwordEncoder.encode(usuario.getContraseña()));
-    usuarioRepository.save(usuario);
-    return "Usuario registrado exitosamente";
-}
 
     public List<Usuario> listarUsuarios() {
         return usuarioRepository.findAll();
     }
 
-    public Usuario obtenerCursoPorNombre(String nombre) {
-        Usuario nombreUsuario = usuarioRepository.findByNombre(nombre);
-        if (nombreUsuario == null)
-            throw new RuntimeException("Curso no encontrado");
-        return nombreUsuario;
+    public Usuario obtenerUsuarioPorNombre(String nombre) {
+        return usuarioRepository.findByPrimerNombre(nombre)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
     }
 }
