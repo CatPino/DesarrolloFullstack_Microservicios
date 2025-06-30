@@ -6,6 +6,7 @@ import com.edutech.gestion_usuario_soporte.service.TicketService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -20,6 +21,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 @RestController
 @RequestMapping("/api/v2/tickets")
 @RequiredArgsConstructor
+@Tag(name = "tickets v2", description = "Controlador versión 2 con Swagger y HATEOAS")
 public class TicketControllerV2 {
 
     private final TicketService ticketService;

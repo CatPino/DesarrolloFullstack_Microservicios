@@ -4,6 +4,7 @@ import com.edutech.gestion_usuario_soporte.model.entity.Rol;
 import com.edutech.gestion_usuario_soporte.model.request.RolRequest;
 import com.edutech.gestion_usuario_soporte.service.RolService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -19,6 +20,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 @RestController
 @RequestMapping("/api/v2/roles")
 @RequiredArgsConstructor
+@Tag(name = "Roles v2", description = "Controlador versión 2 con Swagger y HATEOAS")
 public class RolControllerV2 {
 
     private final RolService rolService;
