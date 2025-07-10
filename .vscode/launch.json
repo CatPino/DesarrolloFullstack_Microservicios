@@ -1,34 +1,53 @@
 {
-    "configurations": [
-        {
-            "type": "java",
-            "name": "Spring Boot-MicroservicioDePagoApplication<MicroservicioDePago>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "mainClass": "com.example.MicroservicioDePago.MicroservicioDePagoApplication",
-            "projectName": "MicroservicioDePago",
-            "args": "",
-            "envFile": "${workspaceFolder}/.env"
-        },
-        {
-            "type": "java",
-            "name": "Spring Boot-GestionUsuarioSoporteApplication<gestion-usuario-soporte>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "mainClass": "com.edutech.gestion_usuario_soporte.GestionUsuarioSoporteApplication",
-            "projectName": "gestion-usuario-soporte",
-            "args": "",
-            "envFile": "${workspaceFolder}/.env"
-        },
-        {
-            "type": "java",
-            "name": "Spring Boot-GestionAcademicaApplication<gestion-academica>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "mainClass": "com.edutech.gestion_academica.GestionAcademicaApplication",
-            "projectName": "gestion-academica",
-            "args": "",
-            "envFile": "${workspaceFolder}/.env"
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+       "type": "java",
+        "name": "Gateway",
+        "request": "launch",
+        "cwd": "${workspaceFolder}/gateway",
+        "mainClass": "com.example.gateway.GatewayApplication",
+        "projectName": "gateway",
+        "classPaths": [
+            "${workspaceFolder}/gateway/target/classes",
+            "${workspaceFolder}/gateway/target/dependency/*"
+      ]
+    },
+    {
+      "type": "java",
+      "name": "MicroservicioDePago",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/MicroservicioDePago",
+      "mainClass": "com.example.MicroservicioDePago.MicroservicioDePagoApplication",
+      "projectName": "MicroservicioDePago",
+      "classPaths": [
+        "${workspaceFolder}/MicroservicioDePago/target/classes",
+        "${workspaceFolder}/MicroservicioDePago/target/dependency/*"
+      ]
+    },
+    {
+      "type": "java",
+      "name": "Gestion Usuario Soporte",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/gestion-usuario-soporte",
+      "mainClass": "com.edutech.gestion_usuario_soporte.GestionUsuarioSoporteApplication",
+      "projectName": "gestion-usuario-soporte",
+      "classPaths": [
+        "${workspaceFolder}/gestion-usuario-soporte/target/classes",
+        "${workspaceFolder}/gestion-usuario-soporte/target/dependency/*"
+      ]
+    },
+    {
+      "type": "java",
+      "name": "Gestion Academica",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/gestion-academica",
+      "mainClass": "com.edutech.gestion_academica.GestionAcademicaApplication",
+      "projectName": "gestion-academica",
+      "classPaths": [
+        "${workspaceFolder}/gestion-academica/target/classes",
+        "${workspaceFolder}/gestion-academica/target/dependency/*"
+      ]
+    }
+  ]
 }
